@@ -31,6 +31,9 @@
             <li>
                 <a class="nav-item nav-link" href="/task/list">待办任务</a>
             </li>
+            <li>
+                <a class="nav-item nav-link" href="/logout">注销</a>
+            </li>
         </ul>
     </div>
 </nav>
