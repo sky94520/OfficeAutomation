@@ -17,6 +17,11 @@ public class TaskController {
     @Resource
     private TaskService taskService;
 
+    /**
+     * 列出当前用户可以处理和需要处理的任务
+     * @param session session 用于获取登录人
+     * @return
+     */
     @RequestMapping(value = "/task/list")
     public ModelAndView todoList(HttpSession session){
         ModelAndView view = new ModelAndView("task-list");
