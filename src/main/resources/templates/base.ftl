@@ -1,3 +1,5 @@
+<#import "macros.ftl" as macro>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +19,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="navbar-header">
-        <a class="navbar-brand thumbnail" href="#">Activiti Explorer</a>
+        <a class="navbar-brand thumbnail" href="/">Activiti Explorer</a>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -25,19 +27,21 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li>
-                <a class="nav-item nav-link active" href="/process-list">部署流程</a>
-            </li>
-            <li>
-                <a class="nav-item nav-link" href="/task/list">待办任务</a>
-            </li>
-            <li>
-                <a class="nav-item nav-link" href="/logout">注销</a>
-            </li>
+            <@macro.render_nav_item endpoint="/process-list" title="部署流程"></@macro.render_nav_item>
+            <@macro.render_nav_item endpoint="/task/list" title="待办任务"></@macro.render_nav_item>
         </ul>
     </div>
 </nav>
 <main>
+    <#if message??>
+        <div id="message" class="alert alert-${level!'info'}">${message}</div>
+        <!--自动隐藏-->
+        <script type="text/javascript">
+            setTimeout(function () {
+                $('#message').hide('slow');
+            }, 5000);
+        </script>
+    </#if>
     <@block name="main">
     </@block>
 </main>

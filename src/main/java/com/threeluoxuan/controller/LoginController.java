@@ -1,6 +1,5 @@
 package com.threeluoxuan.controller;
 
-import com.threeluoxuan.Service.UserService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private UserService userService;
     @Resource
     private IdentityService identityService;
 

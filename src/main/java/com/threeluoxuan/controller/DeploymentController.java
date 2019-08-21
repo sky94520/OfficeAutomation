@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utils.Common;
 
 import javax.annotation.Resource;
@@ -34,7 +35,7 @@ public class DeploymentController {
         return "process-list";
     }
     @RequestMapping(value = "/deploy", method = RequestMethod.POST)
-    public String deploy(@RequestParam(value="file")MultipartFile file){
+    public String deploy(@RequestParam(value="file")MultipartFile file, RedirectAttributes redirectAttributes){
         //获取上传的文件名
         String filename = file.getOriginalFilename();
         try{
@@ -50,8 +51,11 @@ public class DeploymentController {
                 builder.addInputStream(filename, fileInputStream);
             }
             builder.deploy();
+            redirectAttributes.addFlashAttribute("message", "任务成功部署");
         }catch (Exception e){
             System.out.println("error on deploy process");
+            redirectAttributes.addFlashAttribute("level", "danger");
+            redirectAttributes.addFlashAttribute("message", "任务部署失败");
         }
         return "redirect:process-list";
     }
@@ -69,9 +73,22 @@ public class DeploymentController {
             response.getOutputStream().write(bytes, 0, len);
         }
     }
+
+    /**
+     * 根据部署流程id删除该部署
+     * TODO: 目前尚存在一些问题，即不能使用GET进行删除
+     * @param deploymentId 部署流程的id
+     * @param redirectAttributes 用于显示闪现消息
+     * @return 重定向到显示流程列表
+     */
     @RequestMapping(value = "/delete-deployment")
-    public String deleteProcessDefinition(@RequestParam("deploymentId") String deploymentId){
+    public String deleteProcessDefinition(@RequestParam("deploymentId") String deploymentId
+            , RedirectAttributes redirectAttributes){
         repositoryService.deleteDeployment(deploymentId, true);
+
+        redirectAttributes.addFlashAttribute("level", "info");
+        redirectAttributes.addFlashAttribute("message", "任务删除成功");
+
         return "redirect:process-list";
     }
 }

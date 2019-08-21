@@ -20,7 +20,14 @@
                 <td>${task.processInstanceId}</td>
                 <td>${task.createTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                 <td>${task.assignee!"无"}</td>
-                <td>操作TODO</td>
+                <td>
+                    <!--不为空-->
+                    <#if task.assignee??>
+                        <a class="btn" href="">签收</a>
+                    <#else>
+                        <a class="btn" href="">办理</a>
+                    </#if>
+                </td>
             </tr>
         </#list>
     </table>
