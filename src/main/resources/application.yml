@@ -24,6 +24,7 @@ spring:
     charset: utf-8
     cache: false
     check-template-location: true
+    request-context-attribute: request
   mvc:
     static-path-pattern: /static/**
 

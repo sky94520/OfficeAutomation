@@ -14,7 +14,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">程定义ID</th>
+            <th scope="col">流程定义ID</th>
             <th scope="col">部署ID</th>
             <th scope="col">流程定义名称</th>
             <th scope="col">流程定义KEY</th>
@@ -38,7 +38,7 @@
                     <td>无流程图</td>
                 </#if>
                 <td>
-                    <a target="_blank" class="btn btn-danger" href="/delete-deployment?deploymentId=${pd.deploymentId}">删除</a>
+                    <a target="_self" class="btn btn-danger" href="/delete-deployment?deploymentId=${pd.deploymentId}">删除</a>
                     <a class="btn btn-primary" href="/getform/start/${pd.id}">启动</a>
                 </td>
             </tr>
