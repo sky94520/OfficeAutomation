@@ -12,13 +12,13 @@
                         <form action="/validate" method="post">
                             <div class="form-group">
                                 <label class="form-control-label" for="username">用户名</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <input type="text" class="form-control" id="username" name="username" required placeholder="请输入用户名">
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label" for="password">密码</label>
-                                <input type="text" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" value="登录"></button>
+                            <button type="submit" class="btn btn-primary btn-block">登录</button>
                         </form>
                     </div>
                     <hr>
