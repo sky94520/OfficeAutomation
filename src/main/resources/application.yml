@@ -1,0 +1,29 @@
+
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://47.107.246.172:3306/activiti
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: qwerty1234
+
+  # activiti default configuration
+  activiti:
+    database-schema-update: true
+    check-process-definitions: false
+    #process-definition-location-prefix: classpath:/processes/
+    #    process-definition-location-suffixes:
+    #      - **.bpmn
+    #      - **.bpmn20.xml
+    history-level: full
+  freemarker:
+    suffix: .ftl
+    content-type: text/html
+    charset: utf-8
+    cache: false
+    check-template-location: true
+  mvc:
+    static-path-pattern: /static/**
+
