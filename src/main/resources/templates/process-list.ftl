@@ -37,7 +37,10 @@
                 <#else>
                     <td>无流程图</td>
                 </#if>
-                <td><a target="_blank" href="/delete-deployment?deploymentId=${pd.deploymentId}">删除</a></td>
+                <td>
+                    <a target="_blank" class="btn btn-danger" href="/delete-deployment?deploymentId=${pd.deploymentId}">删除</a>
+                    <a class="btn btn-primary" href="/getform/start/${pd.id}">启动</a>
+                </td>
             </tr>
         </#list>
     </table>

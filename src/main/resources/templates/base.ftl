@@ -17,7 +17,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="navbar-header">
-        <a class="navbar-brand thumbnail" href="#">Logo</a>
+        <a class="navbar-brand thumbnail" href="#">Activiti Explorer</a>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,6 +27,9 @@
         <ul class="navbar-nav mr-auto">
             <li>
                 <a class="nav-item nav-link active" href="/process-list">部署流程</a>
+            </li>
+            <li>
+                <a class="nav-item nav-link" href="/task/list">待办任务</a>
             </li>
         </ul>
     </div>
