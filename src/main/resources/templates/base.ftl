@@ -8,7 +8,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title><@block name="title">Base title</@block></title>
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="../static/css/bootstrap_v4.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap_v4.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <@block name="styles"></@block>
@@ -37,7 +37,7 @@
 </main>
 
 <@block name="scripts">
-    <script src="../static/js/bootstrap_v4.min.js"></script>
+    <script src="/static/js/bootstrap_v4.min.js"></script>
 </@block>
 </body>
 </html>
