@@ -1,4 +1,4 @@
-<@override name="title">Hello</@override>
+<@override name="title">待处理任务</@override>
 
 <@override name="main">
 <div class="container">
@@ -23,9 +23,9 @@
                 <td>
                     <!--不为空-->
                     <#if task.assignee??>
-                        <a class="btn" href="">签收</a>
-                    <#else>
                         <a class="btn" href="">办理</a>
+                    <#else>
+                        <a class="btn" href="/task/claim/${task.id}">签收</a>
                     </#if>
                 </td>
             </tr>
