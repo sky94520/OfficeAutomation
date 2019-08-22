@@ -2,25 +2,22 @@ package com.threeluoxuan.controller;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utils.Common;
 import utils.UserUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class TaskController {
@@ -95,35 +92,13 @@ public class TaskController {
      * 完成一个任务
      * @param taskId 任务ID
      * @param request 获取表单数据
-     * @return
-     * @throws Exception
      */
     @RequestMapping(value = "/task/complete/{taskId}")
-    public String completeTask(@PathVariable("taskId") String taskId, HttpServletRequest request) throws Exception {
+    public String completeTask(@PathVariable("taskId") String taskId, HttpServletRequest request){
+        //获取填充的数据
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
-        Map<String, String> formValues = new HashMap<>();
-        String formKey = taskFormData.getFormKey();
+        Map<String, String> formValues = Common.getFormValue(taskFormData, request);
 
-        //外置表单
-        if (StringUtils.isNotBlank(formKey)){
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            Set<Map.Entry<String, String[]>> entrySet = parameterMap.entrySet();
-            for (Map.Entry<String, String[]> entry : entrySet) {
-                String key = entry.getKey();
-                formValues.put(key, entry.getValue()[0]);
-            }
-        }
-        //动态表单
-        else{
-            //从请求中获取表单的值
-            List<FormProperty> formProperties = taskFormData.getFormProperties();
-            for (FormProperty formProperty: formProperties){
-                if (formProperty.isWritable()){
-                    String value = request.getParameter(formProperty.getId());
-                    formValues.put(formProperty.getId(), value);
-                }
-            }
-        }
         formService.submitTaskFormData(taskId, formValues);
         return "redirect:/task/list";
     }

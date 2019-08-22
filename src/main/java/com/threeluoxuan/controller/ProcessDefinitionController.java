@@ -3,7 +3,6 @@ package com.threeluoxuan.controller;
 import org.activiti.engine.FormService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -11,14 +10,12 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import utils.Common;
 import utils.UserUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class ProcessDefinitionController {
@@ -74,26 +71,7 @@ public class ProcessDefinitionController {
                                        HttpServletRequest request){
         //先读取表单字段
         StartFormData formData = formService.getStartFormData(processDefinitionId);
-        Map<String, String> formValues = new HashMap<>();
-        boolean hasStartFormKey = (formData.getFormKey() != null);
-
-        //外置表单
-        if (hasStartFormKey){
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            Set<Map.Entry<String, String[]>> entrySet = parameterMap.entrySet();
-            for (Map.Entry<String, String[]> entry: entrySet){
-                String key = entry.getKey();
-                formValues.put(key, entry.getValue()[0]);
-            }
-        }//动态表单
-        else{
-            //从请求中获取表单字段的值
-            List<FormProperty> formProperties = formData.getFormProperties();
-            for (FormProperty property: formProperties){
-                String value = request.getParameter(property.getId());
-                formValues.put(property.getId(), value);
-            }
-        }
+        Map<String, String> formValues = Common.getFormValue(formData, request);
         //获取当前登录的用户
         User user = UserUtil.getUserFromSession(request.getSession());
         String userId = user.getId();
