@@ -16,8 +16,10 @@ public class LoginController {
 
     @Resource
     private IdentityService identityService;
-    /*
-    跳转至登录页面
+
+    /**
+     * 跳转至登录页面
+     * @return
      */
     @RequestMapping(value = "/login")
     public ModelAndView login(){
@@ -25,8 +27,10 @@ public class LoginController {
         return view;
     }
 
-    /*
-    跳转至登出
+    /**
+     * 跳转至登出
+     * @param httpSession
+     * @return
      */
     @RequestMapping("/logout")
     public String logout(HttpSession httpSession) {
@@ -34,8 +38,10 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    /*
-    用于拦截器拦截的路由等待5秒并跳转至登录界面
+    /**
+     * 用于拦截器拦截的路由等待5秒并跳转至登录界面
+     * @param redirectAttributes
+     * @return
      */
     @RequestMapping(value = "/wait")
     public String wait_redirect(RedirectAttributes redirectAttributes){
@@ -43,8 +49,13 @@ public class LoginController {
         redirectAttributes.addFlashAttribute("message", "请先登录");
         return "redirect:login";
     }
-    /*
-    验证用户名和密码
+
+    /**
+     * 验证用户名和密码
+     * @param username
+     * @param password
+     * @param httpSession
+     * @return
      */
     @PostMapping(value = "/validate")
     private String validate(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession httpSession){
