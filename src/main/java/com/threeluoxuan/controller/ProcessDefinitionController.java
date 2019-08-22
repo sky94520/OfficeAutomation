@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class ProcessDefinitionController {
@@ -39,18 +40,21 @@ public class ProcessDefinitionController {
         //TODO:获取流程定义
         ProcessDefinition definition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(processDefinitionId).singleResult();
-        boolean hasStartFormKey = definition.hasStartFormKey();
 
         ModelAndView view = new ModelAndView("start-process-form");
-        view.addObject("message", "helloWorld");
-        //判断是否有formkey属性
+        //boolean hasStartFormKey = definition.hasStartFormKey();
+        StartFormData startFormData = formService.getStartFormData(processDefinitionId);
+        String formKey = startFormData.getFormKey();
+        //通过检测formKey存在来判断是否是外置表单
+        boolean hasStartFormKey = (formKey != null);
+        //外置表单
         if (hasStartFormKey){
             Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
             view.addObject("startFormData", renderedStartForm);
             view.addObject("processDefinition", definition);
         }
+        //动态表单
         else {
-            StartFormData startFormData = formService.getStartFormData(processDefinitionId);
             view.addObject("startFormData", startFormData);
         }
         view.addObject("hasStartFormKey", hasStartFormKey);
@@ -66,9 +70,23 @@ public class ProcessDefinitionController {
         //从请求种获取表单字段的值
         List<FormProperty> formProperties = formData.getFormProperties();
         Map<String, String> formValues = new HashMap<>();
-        for (FormProperty property: formProperties){
-            String value = request.getParameter(property.getId());
-            formValues.put(property.getId(), value);
+        boolean hasStartFormKey = (formData.getFormKey() != null);
+
+        //外置表单
+        if (hasStartFormKey){
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            Set<Map.Entry<String, String[]>> entrySet = parameterMap.entrySet();
+            for (Map.Entry<String, String[]> entry: entrySet){
+                String key = entry.getKey();
+                formValues.put(key, entry.getValue()[0]);
+            }
+        }
+        //动态表单
+        else{
+            for (FormProperty property: formProperties){
+                String value = request.getParameter(property.getId());
+                formValues.put(property.getId(), value);
+            }
         }
         //获取当前登录的用户
         User user = UserUtil.getUserFromSession(request.getSession());

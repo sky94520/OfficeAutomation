@@ -6,6 +6,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class TaskController {
@@ -72,17 +74,19 @@ public class TaskController {
     public ModelAndView readTaskForm(@PathVariable("taskId") String taskId) throws Exception {
         ModelAndView view = new ModelAndView("task-form");
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
+        view.addObject("taskId", taskId);
 
         if (taskFormData.getFormKey() != null){
-            Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+            Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
 
             view.addObject("task", task);
             view.addObject("taskFormData", renderedTaskForm);
             view.addObject("hasFormKey", true);
         }
-        view.addObject("taskId", taskId);
-        view.addObject("taskFormData", taskFormData);
+        else{
+            view.addObject("taskFormData", taskFormData);
+        }
 
         return view;
     }
@@ -92,10 +96,24 @@ public class TaskController {
         //从请求中获取表单的值
         List<FormProperty> formProperties = taskFormData.getFormProperties();
         Map<String, String> formValues = new HashMap<>();
-        for (FormProperty formProperty: formProperties){
-            if (formProperty.isWritable()){
-                String value = request.getParameter(formProperty.getId());
-                formValues.put(formProperty.getId(), value);
+        String formKey = taskFormData.getFormKey();
+
+        //外置表单
+        if (StringUtils.isNotBlank(formKey)){
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            Set<Map.Entry<String, String[]>> entrySet = parameterMap.entrySet();
+            for (Map.Entry<String, String[]> entry : entrySet) {
+                String key = entry.getKey();
+                formValues.put(key, entry.getValue()[0]);
+            }
+        }
+        //动态表单
+        else{
+            for (FormProperty formProperty: formProperties){
+                if (formProperty.isWritable()){
+                    String value = request.getParameter(formProperty.getId());
+                    formValues.put(formProperty.getId(), value);
+                }
             }
         }
         formService.submitTaskFormData(taskId, formValues);

@@ -23,9 +23,15 @@
                 <td>
                     <!--不为空-->
                     <#if task.assignee??>
-                        <a class="btn" href="/task/getform/${task.id}">办理</a>
+                        <a class="btn btn-info" href="/task/getform/${task.id}">
+                            <i class="mdui-icon material-icons">&#xe7fd;</i>
+                            办理
+                        </a>
                     <#else>
-                        <a class="btn" href="/task/claim/${task.id}">签收</a>
+                        <a class="btn btn-info" href="/task/claim/${task.id}">
+                            <i class="mdui-icon material-icons">&#xe3c9;</i>
+                            签收
+                        </a>
                     </#if>
                 </td>
             </tr>
