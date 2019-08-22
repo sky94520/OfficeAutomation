@@ -7,7 +7,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.handler.Handler;
 
 @Component
 public class AdminLoginInterceptor implements HandlerInterceptor {
@@ -18,7 +17,7 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 //        得到session
         HttpSession session = httpServletRequest.getSession(true);
 //        得到对象
-        Object admin = session.getAttribute("admin");
+        Object admin = session.getAttribute("user");
 //        判断对象是否存在
         if(admin!=null){
             return true;

@@ -32,9 +32,18 @@
                 <@macro.render_nav_item endpoint="/process-list" title="部署流程"></@macro.render_nav_item>
                 <@macro.render_nav_item endpoint="/task/list" title="待办任务"></@macro.render_nav_item>
             </ul>
+            <!--操作-->
             <ul class="navbar-nav ml-auto">
-                <li class="clearfix">
-                    <a class="nav-item nav-link active float-right" href="/logout">注销</a>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">
+                        ${user.firstName}&nbsp;${user.lastName}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                        <a class="dropdown-item" href="/logout">
+                            <i class="mdui-icon material-icons">&#xe8ac;</i> 注销
+                        </a>
+                    </div>
                 </li>
             </ul>
         <#else>

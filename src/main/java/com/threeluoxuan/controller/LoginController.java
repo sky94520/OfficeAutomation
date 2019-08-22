@@ -15,7 +15,6 @@ public class LoginController {
 
     @Resource
     private IdentityService identityService;
-
     /*
     跳转至登录页面
      */
@@ -29,9 +28,9 @@ public class LoginController {
     跳转至登出
      */
     @RequestMapping("/logout")
-    public ModelAndView logout(HttpSession httpSession) {
-        httpSession.removeAttribute(UserUtil.USER);
-        return this.login();
+    public String logout(HttpSession httpSession) {
+        httpSession.removeAttribute("user");
+        return "redirect:/login";
     }
 
     @PostMapping(value = "/validate")

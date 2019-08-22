@@ -20,14 +20,12 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // 浏览器发送atguigu请求 会来到success页面
         registry.addViewController("/").setViewName("login.ftl");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(adminLoginInterceptor).addPathPatterns("/admin/**").excludePathPatterns("/login/**");
-//        this.addInterceptors(registry);
+        registry.addInterceptor(adminLoginInterceptor).addPathPatterns("/**").excludePathPatterns("/login", "/validate");
     }
 
     @Override
