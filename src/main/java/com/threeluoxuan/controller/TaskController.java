@@ -90,11 +90,17 @@ public class TaskController {
 
         return view;
     }
+
+    /**
+     * 完成一个任务
+     * @param taskId 任务ID
+     * @param request 获取表单数据
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/task/complete/{taskId}")
     public String completeTask(@PathVariable("taskId") String taskId, HttpServletRequest request) throws Exception {
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
-        //从请求中获取表单的值
-        List<FormProperty> formProperties = taskFormData.getFormProperties();
         Map<String, String> formValues = new HashMap<>();
         String formKey = taskFormData.getFormKey();
 
@@ -109,6 +115,8 @@ public class TaskController {
         }
         //动态表单
         else{
+            //从请求中获取表单的值
+            List<FormProperty> formProperties = taskFormData.getFormProperties();
             for (FormProperty formProperty: formProperties){
                 if (formProperty.isWritable()){
                     String value = request.getParameter(formProperty.getId());

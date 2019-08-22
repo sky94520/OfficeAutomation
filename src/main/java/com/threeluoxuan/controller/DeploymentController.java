@@ -27,13 +27,25 @@ import java.util.zip.ZipInputStream;
 public class DeploymentController {
     @Resource
     private RepositoryService repositoryService;
-    //流程定义列表
+
+    /**
+     * 显示当前的已经部署的流程文件 并且可以部署文件
+     * @param model 显示页面
+     * @return ftl文件名称
+     */
     @RequestMapping(value = "/process-list")
     public String processList(ModelMap model){
         List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().list();
         model.addAttribute("processDefinitionList", processDefinitions);
         return "process-list";
     }
+
+    /**
+     * 部署流程文件
+     * @param file 需要部署的文件
+     * @param redirectAttributes 用于显示闪回信息
+     * @return
+     */
     @RequestMapping(value = "/deploy", method = RequestMethod.POST)
     public String deploy(@RequestParam(value="file")MultipartFile file, RedirectAttributes redirectAttributes){
         //获取上传的文件名
@@ -59,6 +71,14 @@ public class DeploymentController {
         }
         return "redirect:process-list";
     }
+
+    /**
+     * 读取流程文件或者流程图的显示
+     * @param processDefinitionId 流程定义的id
+     * @param resourceName 资源名称
+     * @param response 存放资源信息
+     * @throws Exception
+     */
     @RequestMapping(value = "/read-resource")
     public void readResource(@RequestParam("pdid") String processDefinitionId, @RequestParam("resourceName") String resourceName,
                              HttpServletResponse response) throws Exception{
@@ -87,7 +107,7 @@ public class DeploymentController {
         repositoryService.deleteDeployment(deploymentId, true);
 
         redirectAttributes.addFlashAttribute("level", "info");
-        redirectAttributes.addFlashAttribute("message", "任务删除成功");
+        redirectAttributes.addFlashAttribute("message", "流程删除成功");
 
         return "redirect:process-list";
     }

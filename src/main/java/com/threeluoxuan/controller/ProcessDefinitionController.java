@@ -62,13 +62,18 @@ public class ProcessDefinitionController {
 
         return view;
     }
+
+    /**
+     * 根据给定的流程ID创建一个流程的实例
+     * @param processDefinitionId 流程ID
+     * @param request 获取表单数据
+     * @return
+     */
     @RequestMapping(value = "process-instance/start/{processDefinitionId}", method = RequestMethod.POST)
     public String startProcessInstance(@PathVariable("processDefinitionId") String processDefinitionId,
                                        HttpServletRequest request){
         //先读取表单字段
         StartFormData formData = formService.getStartFormData(processDefinitionId);
-        //从请求种获取表单字段的值
-        List<FormProperty> formProperties = formData.getFormProperties();
         Map<String, String> formValues = new HashMap<>();
         boolean hasStartFormKey = (formData.getFormKey() != null);
 
@@ -80,9 +85,10 @@ public class ProcessDefinitionController {
                 String key = entry.getKey();
                 formValues.put(key, entry.getValue()[0]);
             }
-        }
-        //动态表单
+        }//动态表单
         else{
+            //从请求中获取表单字段的值
+            List<FormProperty> formProperties = formData.getFormProperties();
             for (FormProperty property: formProperties){
                 String value = request.getParameter(property.getId());
                 formValues.put(property.getId(), value);
