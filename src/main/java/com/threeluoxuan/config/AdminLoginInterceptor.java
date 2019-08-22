@@ -23,7 +23,7 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
             return true;
         }else{
 //            不存在则跳转到登录页
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/login");
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/wait");
             return false;
         }
     }

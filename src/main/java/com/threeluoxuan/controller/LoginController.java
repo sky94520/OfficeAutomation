@@ -5,6 +5,7 @@ import org.activiti.engine.identity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utils.UserUtil;
 
 import javax.annotation.Resource;
@@ -33,6 +34,18 @@ public class LoginController {
         return "redirect:/login";
     }
 
+    /*
+    用于拦截器拦截的路由等待5秒并跳转至登录界面
+     */
+    @RequestMapping(value = "/wait")
+    public String wait_redirect(RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("level", "danger");
+        redirectAttributes.addFlashAttribute("message", "请先登录");
+        return "redirect:login";
+    }
+    /*
+    验证用户名和密码
+     */
     @PostMapping(value = "/validate")
     private String validate(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession httpSession){
         if (identityService.checkPassword(username, password)){
@@ -44,4 +57,5 @@ public class LoginController {
         else
             return "redirect:/login";
     }
+
 }
