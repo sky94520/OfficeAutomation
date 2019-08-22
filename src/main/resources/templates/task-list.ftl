@@ -23,7 +23,7 @@
                 <td>
                     <!--不为空-->
                     <#if task.assignee??>
-                        <a class="btn" href="">办理</a>
+                        <a class="btn" href="/task/getform/${task.id}">办理</a>
                     <#else>
                         <a class="btn" href="/task/claim/${task.id}">签收</a>
                     </#if>
