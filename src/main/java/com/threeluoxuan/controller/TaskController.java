@@ -37,10 +37,6 @@ public class TaskController {
         User user = UserUtil.getUserFromSession(session);
         String userId = user.getId();
 
-        //获取该用户的待办任务的数量
-        long task_num = taskService.createTaskQuery().taskCandidateOrAssigned(userId).count();
-        session.setAttribute("task_num", task_num);
-
         List<Task> tasks = taskService.createTaskQuery().taskCandidateOrAssigned(userId).list();
         view.addObject("tasks", tasks);
         return view;

@@ -29,12 +29,14 @@ public class LoginController {
 
     /**
      * 跳转至登出
-     * @param httpSession
+     * @param session
      * @return
      */
     @RequestMapping("/logout")
-    public String logout(HttpSession httpSession) {
-        httpSession.removeAttribute("user");
+    public String logout(HttpSession session) {
+        session.removeAttribute("user");
+        session.removeAttribute("pending_task");
+
         return "redirect:/login";
     }
 
@@ -62,7 +64,6 @@ public class LoginController {
         if (identityService.checkPassword(username, password)){
             User user = identityService.createUserQuery().userId(username).singleResult();
             httpSession.setAttribute(UserUtil.USER, user);
-            httpSession.removeAttribute("task_num");
 
             return "redirect:/process-list";
         }

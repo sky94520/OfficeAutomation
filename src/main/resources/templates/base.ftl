@@ -30,7 +30,15 @@
         <#if user??>
             <ul class="navbar-nav mr-auto">
                 <@macro.render_nav_item endpoint="/process-list" title="部署流程"></@macro.render_nav_item>
-                <@macro.render_nav_item endpoint="/task/list" title="待办任务"></@macro.render_nav_item>
+                <li>
+                    <a class="nav-item nav-link <#if "/task/list" == request.getRequestUri()>active</#if>"
+                       href="/task/list">
+                        待办任务
+                        <#if pending_task??>
+                            <span class="badge" style="background-color: red;color:white">${pending_task}</span>
+                        </#if>
+                    </a>
+                </li>
             </ul>
             <!--操作-->
             <ul class="navbar-nav ml-auto">
