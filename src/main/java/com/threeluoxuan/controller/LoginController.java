@@ -62,6 +62,7 @@ public class LoginController {
         if (identityService.checkPassword(username, password)){
             User user = identityService.createUserQuery().userId(username).singleResult();
             httpSession.setAttribute(UserUtil.USER, user);
+            httpSession.removeAttribute("task_num");
 
             return "redirect:/process-list";
         }
