@@ -28,10 +28,9 @@ public class LoginController {
     跳转至登出
      */
     @RequestMapping("/logout")
-    public ModelAndView logout(HttpSession httpSession) {
+    public String logout(HttpSession httpSession) {
         httpSession.removeAttribute("user");
-        ModelAndView view = new ModelAndView("login");
-        return view;
+        return "redirect:/login";
     }
 
     @PostMapping(value = "/validate")
