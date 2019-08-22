@@ -1,8 +1,8 @@
-<@override name="title">Hello</@override>
+<@override name="title">登录界面</@override>
 
 <@override name="main">
     <div class="container">
-        <div class="row">
+        <div class="row" style="margin-top: 10%;">
             <div class="col-4 card bg-light text-dark offset-4">
                 <div class="card-body">
                     <div>
@@ -17,6 +17,15 @@
                             <div class="form-group">
                                 <label class="form-control-label" for="password">密码</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class=" form-group form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" id="remember" name="remember" type="checkbox" value="y">七天免登录
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">登录</button>
                         </form>
