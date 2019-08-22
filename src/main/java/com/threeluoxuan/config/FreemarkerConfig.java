@@ -1,4 +1,4 @@
-package com.threeluoxuan;
+package com.threeluoxuan.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
