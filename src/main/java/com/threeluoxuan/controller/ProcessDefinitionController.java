@@ -72,9 +72,7 @@ public class ProcessDefinitionController {
         }
         //获取当前登录的用户
         User user = UserUtil.getUserFromSession(request.getSession());
-        //TODO暂时未登录
-        //String userId = user.getId();
-        String userId = "eric";
+        String userId = user.getId();
         identityService.setAuthenticatedUserId(userId);
         //提交表单字段并开启新的流程
         ProcessInstance instance = formService.submitStartFormData(processDefinitionId, formValues);

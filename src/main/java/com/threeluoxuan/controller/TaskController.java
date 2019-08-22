@@ -28,8 +28,7 @@ public class TaskController {
     public ModelAndView todoList(HttpSession session){
         ModelAndView view = new ModelAndView("task-list");
         User user = UserUtil.getUserFromSession(session);
-        //String userId = user.getId();
-        String userId = "kermit";
+        String userId = user.getId();
 
         List<Task> tasks = taskService.createTaskQuery().taskCandidateOrAssigned(userId).list();
         view.addObject("tasks", tasks);
@@ -46,7 +45,7 @@ public class TaskController {
     @RequestMapping(value = "task/claim/{id}")
     public String claim(@PathVariable("id") String taskId, HttpSession session, RedirectAttributes redirectAttributes){
         User user = UserUtil.getUserFromSession(session);
-        String userId = "kermit";
+        String userId = user.getId();
         taskService.claim(taskId, userId);
 
         redirectAttributes.addFlashAttribute("message", "任务已签收");
