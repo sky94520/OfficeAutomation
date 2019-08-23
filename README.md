@@ -6,7 +6,7 @@
 > 4. rapid-core 扩展freemarker实现了模板继承
 ## 2. 热更新
 > 默认并未实现热更新，可参考此帖子：https://blog.csdn.net/babyyaoyao/article/details/80832417
-> maven已经添加依赖，需要修改idea
+> maven已经添加依赖，需要修改idea。对于Chrmoe是使用Ctrl Shift R
 ## 3. 闪现消息
 > 在Spring MVC中，被@RequestMapping注解的方法，可以接收
 > RedirectAttributes ra参数，通过ra.addFlashAttribute(key,value)

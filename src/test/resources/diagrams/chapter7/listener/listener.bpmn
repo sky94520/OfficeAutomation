@@ -2,14 +2,14 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="listener" name="listener">
     <extensionElements>
-      <activiti:executionListener event="start" class="me.kafeitu.activiti.chapter7.listener.ProcessStartExecutionListener"></activiti:executionListener>
+      <activiti:executionListener event="start" delegateExpression="${startListener}"></activiti:executionListener>
       <activiti:executionListener event="end" delegateExpression="${endListener}"></activiti:executionListener>
     </extensionElements>
     <startEvent id="startevent1" name="Start"></startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="usertask1" name="任务监听器" activiti:assignee="henryyan">
       <extensionElements>
-        <activiti:taskListener event="create" class="me.kafeitu.activiti.chapter7.listener.CreateTaskListener">
+        <activiti:taskListener event="create" delegateExpression="${taskListener}">
           <activiti:field name="content">
             <activiti:expression>Hello, ${name}</activiti:expression>
           </activiti:field>
