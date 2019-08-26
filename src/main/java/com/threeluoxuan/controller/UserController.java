@@ -17,6 +17,10 @@ public class UserController {
     @Resource
     private IdentityService identityService;
 
+    /**
+     * 获取用户列表
+     * @return 返回按照类型分类好的用户列表
+     */
     @GetMapping(value = "/user/list")
     @ResponseBody
     public Map<String, List<User>> getUserList(){

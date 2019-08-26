@@ -54,21 +54,26 @@ public class LoginController {
 
     /**
      * 验证用户名和密码
-     * @param username
-     * @param password
-     * @param httpSession
-     * @return
+     * @param username 用户的id
+     * @param password 用户的密码
+     * @param httpSession session
+     * @param redirectAttributes 显示闪回消息
+     * @return 登录成功则重定向到显示任务，否则重定向到登录界面
      */
     @PostMapping(value = "/validate")
-    private String validate(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession httpSession){
+    private String validate(@RequestParam("username") String username, @RequestParam("password") String password
+            , HttpSession httpSession, RedirectAttributes redirectAttributes){
         if (identityService.checkPassword(username, password)){
             User user = identityService.createUserQuery().userId(username).singleResult();
             httpSession.setAttribute(UserUtil.USER, user);
 
             return "redirect:/process-list";
         }
-        else
+        else {
+            redirectAttributes.addFlashAttribute("message", "账号或密码有误，请确认后重新输入");
+            redirectAttributes.addFlashAttribute("level", "warning");
             return "redirect:/login";
+        }
     }
 
 }

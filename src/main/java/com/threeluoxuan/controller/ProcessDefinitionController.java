@@ -11,6 +11,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utils.Common;
 import utils.UserUtil;
 
@@ -65,11 +66,12 @@ public class ProcessDefinitionController {
      * 根据给定的流程ID创建一个流程的实例
      * @param processDefinitionId 流程ID
      * @param request 获取表单数据
-     * @return
+     * @param redirectAttributes 闪回消息
+     * @return 重定向
      */
     @RequestMapping(value = "process-instance/start/{processDefinitionId}", method = RequestMethod.POST)
     public String startProcessInstance(@PathVariable("processDefinitionId") String processDefinitionId,
-                                       HttpServletRequest request){
+                                       HttpServletRequest request, RedirectAttributes redirectAttributes){
         //先读取表单字段
         StartFormData formData = formService.getStartFormData(processDefinitionId);
         Map<String, String> formValues = Common.getFormValue(formData, request);
@@ -79,6 +81,8 @@ public class ProcessDefinitionController {
         identityService.setAuthenticatedUserId(userId);
         //提交表单字段并开启新的流程
         ProcessInstance instance = formService.submitStartFormData(processDefinitionId, formValues);
+
+        redirectAttributes.addFlashAttribute("message", "流程创建成功");
 
         return "redirect:/process-list";
     }

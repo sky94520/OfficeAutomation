@@ -49,10 +49,10 @@ public class DeploymentController {
         boolean ret = deploymentService.deploy(file);
         //部署结果
         if (ret){
-            redirectAttributes.addFlashAttribute("message", "任务成功部署");
+            redirectAttributes.addFlashAttribute("message", "流程成功部署");
         } else {
             redirectAttributes.addFlashAttribute("level", "danger");
-            redirectAttributes.addFlashAttribute("message", "任务部署失败");
+            redirectAttributes.addFlashAttribute("message", "流程部署失败");
         }
         return "redirect:process-list";
     }

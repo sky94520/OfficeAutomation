@@ -93,16 +93,20 @@ public class TaskController {
      * 完成一个任务
      * @param taskId 任务ID
      * @param request 获取表单数据
+     * @param redirectAttributes 闪回消息
      */
     @RequestMapping(value = "/task/complete/{taskId}")
-    public String completeTask(@PathVariable("taskId") String taskId, HttpServletRequest request){
+    public String completeTask(@PathVariable("taskId") String taskId, HttpServletRequest request,
+                               RedirectAttributes redirectAttributes){
         //获取填充的数据
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
         Map<String, String> formValues = Common.getFormValue(taskFormData, request);
 
-        Enumeration<String> parameterNames = request.getParameterNames();
-
         formService.submitTaskFormData(taskId, formValues);
+
+        redirectAttributes.addFlashAttribute("message", "任务办理成功");
+        redirectAttributes.addFlashAttribute("level", "success");
+
         return "redirect:/task/list";
     }
 }

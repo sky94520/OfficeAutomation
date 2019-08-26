@@ -67,7 +67,7 @@
 </nav>
 <main>
     <#if message??>
-        <div id="message" class="alert alert-${level!'info'}">${message}</div>
+        <div id="message" class="alert alert-${level!'info'} text-center">${message}</div>
         <!--自动隐藏-->
         <script type="text/javascript">
             setTimeout(function () {

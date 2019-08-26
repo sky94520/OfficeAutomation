@@ -8,7 +8,6 @@ import cn.org.rapid_framework.freemarker.directive.ExtendsDirective;
 import cn.org.rapid_framework.freemarker.directive.OverrideDirective;
 
 /**
- * 需要和启动器放在同一级
  * freemarker的模板继承配置
  */
 @Configuration

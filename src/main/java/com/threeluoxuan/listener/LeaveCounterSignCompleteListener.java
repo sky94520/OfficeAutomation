@@ -4,6 +4,9 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * Activiti监听器 满足一定条件后会触发监听器
+ */
 @Component
 public class LeaveCounterSignCompleteListener implements TaskListener {
     @Override

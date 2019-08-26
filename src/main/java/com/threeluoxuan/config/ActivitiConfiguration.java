@@ -10,6 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Activiti的配置
+ * 宋体可以保证生成的流程图不乱码
+ * 自定义表单类型主要用于activiti的表单的类型转换
+ */
 @Configuration
 public class ActivitiConfiguration implements ProcessEngineConfigurationConfigurer {
     @Override
