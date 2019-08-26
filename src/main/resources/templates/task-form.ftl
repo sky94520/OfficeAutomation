@@ -31,7 +31,7 @@
                         <label class="col-sm-2 col-form-label" for="${fp.id}">${fp.name}</label>
                         <div class="col-sm-10">
                             <input type="date" class="form-control" id="${fp.id}" name="${fp.id}"
-                                   data-type="${fp.type.name}" value="${fp.value}" ${required} ${readonly}/>
+                                   data-type="${fp.type.name}" value="${fp.value!''}" ${required} ${readonly}/>
                         </div>
                     <!--下拉框-->
                     <#elseif fp.type.name == 'enum'>

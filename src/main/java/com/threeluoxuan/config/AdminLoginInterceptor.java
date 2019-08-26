@@ -26,8 +26,11 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
             long count = taskService.createTaskQuery().taskCandidateOrAssigned(user.getId()).count();
             if (count != 0)
                 session.setAttribute("pending_task", count);
+            else
+                session.removeAttribute("pending_task");
             return true;
         }else{
+            session.removeAttribute("pending_task");
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/wait");
             return false;
         }

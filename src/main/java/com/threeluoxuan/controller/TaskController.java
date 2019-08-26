@@ -16,6 +16,7 @@ import utils.UserUtil;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +99,8 @@ public class TaskController {
         //获取填充的数据
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
         Map<String, String> formValues = Common.getFormValue(taskFormData, request);
+
+        Enumeration<String> parameterNames = request.getParameterNames();
 
         formService.submitTaskFormData(taskId, formValues);
         return "redirect:/task/list";

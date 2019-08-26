@@ -29,8 +29,15 @@
                         <div class="col-sm-10">
                             <input type="date" class="form-control" id="${fp.id}" name="${fp.id}" data-type="${fp.type.name}"/>
                         </div>
+                    <!--javascript-->
                     <#elseif fp.type.name == "javascript">
                         <script type="text/javascript">${fp.value}</script>
+                    <!--users-->
+                    <#elseif fp.type.name == "users">
+                        <label class="col-sm-2 col-form-label" for="${fp.id}">${fp.name}</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control users" id="${fp.id}" name="${fp.id}" data-type="${fp.type.name}" readonly/>
+                        </div>
                     </#if>
                 </div>
             </#list>
@@ -41,6 +48,60 @@
             <button type="submit" class="btn btn-primary">启动流程</button>
         </div>
     </form>
+    <div id="userModal" class="modal hide fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>选择人员</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <select multiple="multiple" class="form-control"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-miss="modal" aria-hidden="true">关闭</button>
+                    <button type="button" class="btn btn-primary ok">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+</@override>
+
+<@override name="scripts">
+    <script src="/static/js/bootstrap_v4.min.js"></script>
+    <script type="text/javascript">
+        //请求数据
+        $.getJSON("/user/list", function (data) {
+            console.log(data);
+            $('#userModal select').html('');
+            for (var key in data) {
+                var users = data[key];
+                var $opt = $('<optgroup/>', {
+                    label: key
+                }).appendTo('#userModal select');
+                for (var i in users) {
+                    var user = users[i];
+                    $('<option/>', {
+                        value: user.id,
+                        text: user.firstName + ' ' + user.lastName + '(' + user.id + ')'
+                    }).appendTo($opt);
+                }
+            }
+        });
+        //点击users回调函数
+        $('.users').on('click', function () {
+            $('body').data('usersEle', this);
+            $('#userModal').modal('show');
+        })
+        $('#userModal .ok').click(function () {
+            var users = new Array();
+            $('#userModal select option:selected').each(function () {
+                users.push($(this).val());
+            });
+            $('#users').val(users);
+            $('#userModal').modal('hide');
+        });
+    </script>
 </@override>
 <@extends name="base.ftl"/>
