@@ -14,7 +14,22 @@
     <link href="https://cdn.bootcss.com/mdui/0.4.2/css/mdui.min.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-    <@block name="styles"></@block>
+    <@block name="styles">
+    </@block>
+    <style>
+        .hidden{
+            display: none;
+        }
+        .alert{
+            text-align: center;
+        }
+        #div1{
+            float:left;
+        }
+        #div2{
+            float:right
+        }
+    </style>
 </@block>
 </head>
 <body>
@@ -31,6 +46,8 @@
             <ul class="navbar-nav mr-auto">
                 <@macro.render_nav_item endpoint="/process-list" title="部署流程"></@macro.render_nav_item>
                 <@macro.render_nav_item endpoint="/task/list" title="待办任务"></@macro.render_nav_item>
+                <@macro.render_nav_item endpoint="/user-manage" title="用户管理"></@macro.render_nav_item>
+                <@macro.render_nav_item endpoint="/group-manage" title="用户组管理"></@macro.render_nav_item>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="clearfix">
@@ -48,6 +65,14 @@
         </#if>
     </div>
 </nav>
+
+<div id="alert-box-success" class="alert alert-success hidden">
+    <strong><span class="alert-message">操作成功</span></strong>
+</div>
+<div id="alert-box-danger" class="alert alert-danger hidden">
+    <strong><span class="alert-message">操作失败，请稍后再试</span></strong>
+</div>
+
 <main>
     <#if message??>
         <div id="message" class="alert alert-${level!'info'}">${message}</div>
@@ -60,10 +85,57 @@
     </#if>
     <@block name="main">
     </@block>
+
+
 </main>
 
-<@block name="scripts">
+
     <script src="/static/js/bootstrap_v4.min.js"></script>
+
+    <script>
+        /**
+         * 显示/隐藏提示框
+         * @param {boolean} isSuccess
+         * @param {string} modal 模态框id, 用于隐藏模态框
+         * @param {string} message 用于显示的消息
+         */
+        function toggle_alert(isSuccess, modal, message = ""){
+            if(modal){
+                var id = "#" + modal;
+                $(id).modal("hide");
+            }
+
+            let alert_success = $("#alert-box-success");
+            let alert_error = $("#alert-box-danger");
+            // 显示操作成功的提示框
+            if(isSuccess){
+                alert_error.hide();
+
+                if(message){
+                    alert_success.find('.alert-message').text(message);
+                }
+
+                alert_success.show(1000);
+                setTimeout(()=>{
+                    alert_success.hide(2000);
+                }, 2000)
+            }else{
+                alert_success.hide();
+
+                if(message){
+                    alert_error.find('.alert-message').text(message);
+                }
+
+                alert_error.show(1000);
+                setTimeout(()=>{
+                    alert_error.hide(2000);
+                },2000);
+            }
+        }
+    </script>
+
+<@block name="scripts">
 </@block>
+
 </body>
 </html>
