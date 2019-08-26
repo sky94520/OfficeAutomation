@@ -54,6 +54,7 @@
                         </#if>
                     </a>
                 </li>
+                <@macro.render_nav_item endpoint="/user-manage" title="用户管理"></@macro.render_nav_item>
             </ul>
             <!--操作-->
             <ul class="navbar-nav ml-auto">
