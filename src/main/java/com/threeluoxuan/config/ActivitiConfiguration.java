@@ -1,5 +1,7 @@
 package com.threeluoxuan.config;
 
+import com.threeluoxuan.form.BigtextFormType;
+import com.threeluoxuan.form.DoubleFormType;
 import com.threeluoxuan.form.JavascriptFormType;
 import com.threeluoxuan.form.UsersFormType;
 import org.activiti.engine.form.AbstractFormType;
@@ -25,7 +27,8 @@ public class ActivitiConfiguration implements ProcessEngineConfigurationConfigur
         configuration.setAnnotationFontName("宋体");
         //添加自定义表单类型
         List<AbstractFormType> customFormTypes =
-                Arrays.asList(new JavascriptFormType(), new UsersFormType());
+                Arrays.asList(new JavascriptFormType(), new UsersFormType(),
+                        new BigtextFormType(), new DoubleFormType());
         configuration.setCustomFormTypes(customFormTypes);
     }
 }
