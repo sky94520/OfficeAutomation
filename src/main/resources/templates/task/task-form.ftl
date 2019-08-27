@@ -23,11 +23,11 @@
                 <#assign required=fp.required?string("required", "")>
                 <div class="form-group row">
                     <!--文本或者数字类型-->
-                    <#if fp.type.name == "string" || fp.type.name == "long">
+                    <#if fp.type.name == "string" || fp.type.name == "long" || fp.type.name == "double">
                         <label class="col-sm-2 col-form-label" for="${fp.id}">${fp.name}</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="${fp.id}" name="${fp.id}"
-                                   data-type="${fp.type.name}" value="${fp.value}" ${required} ${readonly}/>
+                                   data-type="${fp.type.name}" value="${fp.value!''}" ${required} ${readonly}/>
                         </div>
                     <!--date-->
                     <#elseif fp.type.name == "date">
@@ -35,6 +35,13 @@
                         <div class="col-sm-10">
                             <input type="date" class="form-control" id="${fp.id}" name="${fp.id}"
                                    data-type="${fp.type.name}" value="${fp.value!''}" ${required} ${readonly}/>
+                        </div>
+                    <!--大文本-->
+                    <#elseif fp.type.name == "bigtext">
+                        <label class="col-sm-2 col-form-label" for="${fp.id}">${fp.name}</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="${fp.id}" rows="5" name="${fp.id}"
+                                      data-type="${fp.type.name}" ${required} ${readonly}>${fp.value}</textarea>
                         </div>
                     <!--下拉框-->
                     <#elseif fp.type.name == 'enum'>
@@ -81,4 +88,4 @@
     <script type="text/javascript" src="/static/js/task_form.js"></script>
 </@override>
 
-<@extends name="base.ftl"/>
+<@extends name="/base.ftl"/>

@@ -18,10 +18,16 @@
             <#list startFormData.formProperties as fp>
                 <div class="form-group row">
                     <!--文本或者数字类型-->
-                    <#if fp.type.name == "string" || fp.type.name == "long">
+                    <#if fp.type.name == "string" || fp.type.name == "long" || fp.type.name == "double">
                         <label class="col-sm-2 col-form-label" for="${fp.id}">${fp.name}</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="${fp.id}" name="${fp.id}" data-type="${fp.type.name}" value=""/>
+                        </div>
+                    <!--大文本-->
+                    <#elseif fp.type.name == "bigtext">
+                        <label class="col-sm-2 col-form-label" for="${fp.id}">${fp.name}</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="${fp.id}" rows="5" name="${fp.id}" data-type="${fp.type.name}"></textarea>
                         </div>
                     <!--date-->
                     <#elseif fp.type.name == "date">
@@ -72,4 +78,4 @@
     <script src="/static/js/bootstrap_v4.min.js"></script>
     <script type="text/javascript" src="/static/js/start_process_form.js"></script>
 </@override>
-<@extends name="base.ftl"/>
+<@extends name="/base.ftl"/>

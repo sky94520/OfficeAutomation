@@ -1,6 +1,7 @@
 package com.threeluoxuan.controller;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
@@ -16,7 +17,6 @@ import utils.UserUtil;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +26,8 @@ public class TaskController {
     private TaskService taskService;
     @Resource
     private FormService formService;
+    @Resource
+    private IdentityService identityService;
 
     /**
      * 列出当前用户可以处理和需要处理的任务
@@ -34,7 +36,7 @@ public class TaskController {
      */
     @RequestMapping(value = "/task/list")
     public ModelAndView todoList(HttpSession session){
-        ModelAndView view = new ModelAndView("task-list");
+        ModelAndView view = new ModelAndView("task/task-list");
         User user = UserUtil.getUserFromSession(session);
         String userId = user.getId();
 
@@ -70,7 +72,7 @@ public class TaskController {
      */
     @RequestMapping(value = "task/getform/{taskId}")
     public ModelAndView readTaskForm(@PathVariable("taskId") String taskId) throws Exception {
-        ModelAndView view = new ModelAndView("task-form");
+        ModelAndView view = new ModelAndView("task/task-form");
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
         view.addObject("taskId", taskId);
 
@@ -103,6 +105,9 @@ public class TaskController {
         Map<String, String> formValues = Common.getFormValue(taskFormData, request);
 
         formService.submitTaskFormData(taskId, formValues);
+        //TODO: 设置当前操作人，对于调用活动可以获取到当前操作人
+        User user = UserUtil.getUserFromSession(request.getSession());
+        identityService.setAuthenticatedUserId(user.getId());
 
         redirectAttributes.addFlashAttribute("message", "任务办理成功");
         redirectAttributes.addFlashAttribute("level", "success");
