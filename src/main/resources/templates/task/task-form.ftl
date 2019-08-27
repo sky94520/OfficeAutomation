@@ -2,12 +2,12 @@
 
 <@override name="main">
 <div class="container">
+    <#if hasFormKey??>
+    <#else>
+        <#assign task=taskFormData.task>
+    </#if>
     <h3>
-        <#if hasFormKey??>
-            任务办理-[${task.name}],流程定义ID[${task.processDefinitionId}]
-        <#else>
-            任务办理-[${taskFormData.task.name}],流程定义ID[${taskFormData.task.processDefinitionId}]
-        </#if>
+        任务办理-[${task.name}],流程定义ID[${task.processDefinitionId}]
     </h3>
     <hr>
     <form action="/task/complete/${taskId}" method="post">
@@ -62,7 +62,11 @@
         <!--按钮-->
         <div class="form-group" style="text-align: center">
             <a href="" class="btn btn-info">返回列表</a>
-            <button type="submit" class="btn btn-primary">完成任务</button>
+            <#if task.assignee??>
+                <button type="submit" class="btn btn-primary">完成任务</button>
+            <#else>
+                <a class="btn btn-primary" href="/task/claim/${task.id}?nextDo=handle">签收</a>
+            </#if>
         </div>
     </form>
     <hr>

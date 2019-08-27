@@ -6,9 +6,11 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utils.Common;
@@ -49,11 +51,13 @@ public class TaskController {
      * 签收任务，表示该任务的接收人为自己，之后则可以考虑是否完成/拒绝此任务
      * @param taskId 任务的id
      * @param session session 用于获取User
+     * @param nextDo 签收完之后跳转到哪里 handle 表示跳转到getform
      * @param redirectAttributes 用于发出闪现消息
      * @return
      */
     @RequestMapping(value = "task/claim/{id}")
-    public String claim(@PathVariable("id") String taskId, HttpSession session, RedirectAttributes redirectAttributes){
+    public String claim(@PathVariable("id") String taskId, HttpSession session,
+            @RequestParam(value="nextDo", required=false) String nextDo, RedirectAttributes redirectAttributes){
         User user = UserUtil.getUserFromSession(session);
         String userId = user.getId();
         taskService.claim(taskId, userId);
@@ -61,7 +65,11 @@ public class TaskController {
         redirectAttributes.addFlashAttribute("message", "任务已签收");
         redirectAttributes.addFlashAttribute("level", "success");
 
-        return "redirect:/task/list";
+        if (StringUtils.equals(nextDo, "handle")) {
+            return "redirect:/task/getform/" + taskId;
+        } else {
+            return "redirect:/task/list";
+        }
     }
 
     /**

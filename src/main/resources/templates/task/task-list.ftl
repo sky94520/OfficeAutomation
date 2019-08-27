@@ -28,6 +28,10 @@
                             办理
                         </a>
                     <#else>
+                        <a class="btn btn-info" href="/task/getform/${task.id}">
+                            <i class="mdui-icon material-icons">&#xe417;</i>
+                            查看
+                        </a>
                         <a class="btn btn-info" href="/task/claim/${task.id}">
                             <i class="mdui-icon material-icons">&#xe3c9;</i>
                             签收
