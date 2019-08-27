@@ -146,8 +146,9 @@ public class TaskController {
 
         //更改到期日
         if (StringUtils.equals(propertyName, "dueDate")) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
             Date parse = format.parse(value);
+            task.setDueDate(parse);
             taskService.saveTask(task);
         } else if (StringUtils.equals(propertyName, "priority")) {
             task.setPriority(Integer.parseInt(value));

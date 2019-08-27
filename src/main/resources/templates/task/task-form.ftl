@@ -11,7 +11,7 @@
         <div class="col">
             <span>
                 <i class="mdui-icon material-icons">&#xe916;</i>到期日：
-                <span class="due-date"><#if task.dueDate??>${task.dueDate}<#else>无到期日</#if></span>
+                <span class="due-date"><#if task.dueDate??>${task.dueDate?string("yyyy-mm-dd")}<#else>无到期日</#if></span>
             </span>
             <input type="text" style="display: none;" class="datepicker due-date-input" readonly data-date-format="yyyy-mm-dd">
         </div>
