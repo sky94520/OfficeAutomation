@@ -39,9 +39,10 @@ public class DeploymentService {
     /**
      * 部署文件
      * @param file 文件
+     * @param isFiltering 是否过滤重复部署
      * @return 是否部署成功
      */
-    public boolean deploy(MultipartFile file){
+    public boolean deploy(MultipartFile file, boolean isFiltering){
         //获取上传的文件名
         String filename = file.getOriginalFilename();
         boolean ret = false;
@@ -50,6 +51,7 @@ public class DeploymentService {
             String extension = Common.getExtension(filename);
             //根据扩展名进行部署
             DeploymentBuilder builder = repositoryService.createDeployment();
+
             if (extension.equals("zip") || extension.equals("bar")){
                 ZipInputStream zip = new ZipInputStream(fileInputStream);
                 builder.addZipInputStream(zip);
@@ -57,6 +59,10 @@ public class DeploymentService {
             else {
                 builder.addInputStream(filename, fileInputStream);
             }
+            //TODO:相同部署时则不进行添加
+            if (isFiltering)
+                builder.enableDuplicateFiltering();
+
             builder.deploy();
             ret = true;
         }catch (Exception e){

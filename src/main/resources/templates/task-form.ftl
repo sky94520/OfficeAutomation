@@ -116,6 +116,7 @@
             },
             method: 'POST'
         }).done(function () {
+            toggle_alert(true, "添加评论成功");
             //显示
             readComments();
         });

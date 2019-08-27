@@ -46,7 +46,7 @@ public class DeploymentController {
     @RequestMapping(value = "/deploy", method = RequestMethod.POST)
     public String deploy(@RequestParam(value="file")MultipartFile file, RedirectAttributes redirectAttributes){
         //部署文件
-        boolean ret = deploymentService.deploy(file);
+        boolean ret = deploymentService.deploy(file, true);
         //部署结果
         if (ret){
             redirectAttributes.addFlashAttribute("message", "流程成功部署");
