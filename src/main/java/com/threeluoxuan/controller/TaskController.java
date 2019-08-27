@@ -8,9 +8,7 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utils.Common;
@@ -19,6 +17,9 @@ import utils.UserUtil;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -82,19 +83,23 @@ public class TaskController {
     public ModelAndView readTaskForm(@PathVariable("taskId") String taskId) throws Exception {
         ModelAndView view = new ModelAndView("task/task-form");
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
+        Task task = null;
         view.addObject("taskId", taskId);
 
+        //外置表单
         if (taskFormData.getFormKey() != null){
-            Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+            task = taskService.createTaskQuery().taskId(taskId).singleResult();
             Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
 
-            view.addObject("task", task);
             view.addObject("taskFormData", renderedTaskForm);
             view.addObject("hasFormKey", true);
         }
+        //动态表单
         else{
+            task = taskService.createTaskQuery().taskId(taskId).singleResult();
             view.addObject("taskFormData", taskFormData);
         }
+        view.addObject("task", task);
 
         return view;
     }
@@ -121,5 +126,33 @@ public class TaskController {
         redirectAttributes.addFlashAttribute("level", "success");
 
         return "redirect:/task/list";
+    }
+
+    /**
+     * 修改任务的属性
+     * @param taskId 任务的id
+     * @param propertyName 属性名称 目前处理 dueDate priority
+     * @param value 属性的值
+     * @return success
+     * @throws ParseException
+     */
+    @RequestMapping(value = "task/property/{taskId}")
+    @ResponseBody
+    public String changeTaskProperty(@PathVariable("taskId") String taskId,
+                                     @RequestParam("propertyName") String propertyName,
+                                     @RequestParam("value") String value) throws ParseException {
+        //获取任务
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+
+        //更改到期日
+        if (StringUtils.equals(propertyName, "dueDate")) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date parse = format.parse(value);
+            taskService.saveTask(task);
+        } else if (StringUtils.equals(propertyName, "priority")) {
+            task.setPriority(Integer.parseInt(value));
+            taskService.saveTask(task);
+        }
+        return "success";
     }
 }

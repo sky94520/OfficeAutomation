@@ -43,3 +43,59 @@ $('#saveComment').click(function () {
 var processInstanceId = $('#processInstanceId').val();
 var taskId = $('#taskId').val();
 readComments();
+
+//单击到期日属性可以编辑
+$('.due-date').click(function () {
+    $(this).hide();
+    $('.due-date-input').show();
+});
+//点击时出现日期选择
+$('.datepicker').datepicker({
+    locale: 'zh-cn'
+});
+//更改到期日
+$('.due-date-input').blur(function () {
+    var ele = this;
+    var value = $(this).val();
+    if (value) {
+        $(ele).hide();
+        //发送post请求修改日期
+        $.ajax({
+            url: '/task/property/' + taskId,
+            data: {
+                propertyName: 'dueDate',
+                value: value
+            },
+            method: 'POST'
+        }).done(function () {
+            toggle_alert(true, "截至日期修改成功");
+            $('.due-date').show().text(value);
+        });
+    }
+});
+
+//更改任务优先级
+$('.priority').click(function () {
+    $(this).hide();
+    $('#priority').show();
+});
+//更改任务优先级
+$('#priority').change(function () {
+    var ele = this;
+    var value = $(this).val();
+    if (value) {
+        $(ele).hide();
+        //发送post请求
+        $.ajax({
+            url: '/task/property/' + taskId,
+            data: {
+                propertyName: 'priority',
+                value: value
+            },
+            method: 'POST'
+        }).done(function () {
+            toggle_alert(true, "优先级修改成功");
+            $('.priority').show().text($('option:selected', ele).text());
+        });
+    }
+});

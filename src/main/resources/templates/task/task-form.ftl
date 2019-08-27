@@ -1,30 +1,39 @@
 <@override name="title">任务办理</@override>
+<@override name="styles">
+    <link rel="stylesheet" href="/static/css/datepicker.css">
+</@override>
 
 <@override name="main">
 <div class="container">
-    <#if hasFormKey??>
-    <#else>
-        <#assign task=taskFormData.task>
-    </#if>
     <h3>任务办理-[${task.name}],流程定义ID[${task.processDefinitionId}]</h3>
     <div class="row">
         <#--任务到期日-->
         <div class="col">
             <span>
-                <i class="mdui-icon material-icons">&#xe916;</i>
-                到期日：<#if task.dueDate??>${task.dueDate}<#else>无到期日</#if>
+                <i class="mdui-icon material-icons">&#xe916;</i>到期日：
+                <span class="due-date"><#if task.dueDate??>${task.dueDate}<#else>无到期日</#if></span>
             </span>
+            <input type="text" style="display: none;" class="datepicker due-date-input" readonly data-date-format="yyyy-mm-dd">
         </div>
         <#--优先级-->
         <div class="col">
             <span>
                 <i class="mdui-icon material-icons">&#xe153;</i>优先级：
+                <span class="priority">
                 <#if task.priority??>
                     <#if task.priority == 0>低
                     <#elseif task.priority <= 50>中
                     <#elseif task.priority <= 100>高
                     </#if>
+                <#else>
+                    无优先级
                 </#if>
+                </span>
+                <select name="priority" id="priority" style="display: none;width:50px;">
+                    <option value="0">低</option>
+                    <option value="50">中</option>
+                    <option value="100">高</option>
+                </select>
             </span>
         </div>
         <#--创建日期-->
@@ -115,6 +124,7 @@
 </div>
 </@override>
 <@override name="scripts">
+    <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="/static/js/task_form.js"></script>
 </@override>
 
