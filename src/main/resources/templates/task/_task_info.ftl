@@ -51,9 +51,10 @@
     <div class="col-sm-4">
         <i class="mdui-icon material-icons">&#xe7fd;</i>拥有人：
         <span id="owner">${task.owner!'无'}</span>
+        <#assign taskOwner=task.owner!''>
         <select id="ownerSelect" style="display: none;">
             <#list users as user>
-                <#assign selected=(task.owner == user.id)?string("selected", "")>
+                <#assign selected=(taskOwner == user.id)?string("selected", "")>
                 <option value="${user.id}" ${selected}>
                     ${user.firstName} ${user.lastName}
                 </option>
