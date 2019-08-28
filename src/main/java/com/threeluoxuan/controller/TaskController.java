@@ -68,7 +68,7 @@ public class TaskController {
         ModelAndView view = new ModelAndView("task/task-form");
 
         //填充数据到视图对象中
-        Map<String, Object> results = missionService.getTaskFormData(taskId);
+        Map<String, Object> results = missionService.getTaskData(taskId);
         for (Map.Entry<String, Object> entry : results.entrySet()) {
             view.addObject(entry.getKey(), entry.getValue());
         }

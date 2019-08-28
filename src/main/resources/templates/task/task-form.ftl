@@ -5,46 +5,7 @@
 
 <@override name="main">
 <div class="container">
-    <h3>任务办理-[${task.name}],流程定义ID[${task.processDefinitionId}]</h3>
-    <div class="row">
-        <#--任务到期日-->
-        <div class="col">
-            <span>
-                <i class="mdui-icon material-icons">&#xe916;</i>到期日：
-                <span class="due-date"><#if task.dueDate??>${task.dueDate?string("yyyy-mm-dd")}<#else>无到期日</#if></span>
-            </span>
-            <input type="text" style="display: none;" class="datepicker due-date-input" readonly data-date-format="yyyy-mm-dd">
-        </div>
-        <#--优先级-->
-        <div class="col">
-            <span>
-                <i class="mdui-icon material-icons">&#xe153;</i>优先级：
-                <span class="priority">
-                <#if task.priority??>
-                    <#if task.priority == 0>低
-                    <#elseif task.priority <= 50>中
-                    <#elseif task.priority <= 100>高
-                    </#if>
-                <#else>
-                    无优先级
-                </#if>
-                </span>
-                <select name="priority" id="priority" style="display: none;width:50px;">
-                    <option value="0">低</option>
-                    <option value="50">中</option>
-                    <option value="100">高</option>
-                </select>
-            </span>
-        </div>
-        <#--创建日期-->
-        <div class="col">
-            <span>
-                <i class="mdui-icon material-icons">&#xe916;</i>
-                创建日期：${task.createTime?string("yyyy-MM-dd hh:mm:ss")}
-            </span>
-        </div>
-    </div>
-    <hr>
+    <#include "_task_info.ftl">
     <form action="/task/complete/${taskId}" method="post">
         <input hidden id="taskId" value="${taskId}">
         <#if hasFormKey??>

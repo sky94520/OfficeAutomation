@@ -59,7 +59,7 @@ public class MissionService {
      * @param taskId 任务的id
      * @return 键值对
      */
-    public Map<String, Object> getTaskFormData(String taskId) {
+    public Map<String, Object> getTaskData(String taskId) {
         Map<String, Object> results = new HashMap<>();
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
         Task task;
@@ -78,6 +78,10 @@ public class MissionService {
             results.put("taskFormData", taskFormData);
         }
         results.put("task", task);
+        //获取所有人
+        List<User> users = identityService.createUserQuery().list();
+        results.put("users", users);
+
         return results;
     }
     /**

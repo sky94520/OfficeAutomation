@@ -17,8 +17,28 @@ function readComments() {
                 }
             }).appendTo("#commentList ol");
         }
-        console.log(data);
     });
+}
+/**
+ * 改变任务的属性
+ * @param $element
+ * @param key 要修改的键名
+ * @param callback 发送成功的回调函数
+ */
+function changeTaskProperty($element, key, callback) {
+    var value = $element.val();
+    if (value) {
+        $element.hide();
+        //发送post请求
+        $.ajax({
+            url: '/task/property/' + taskId,
+            data: {
+                propertyName: key,
+                value: value
+            },
+            method: 'POST'
+        }).done(callback);
+    }
 }
 //保存意见
 $('#saveComment').click(function () {
@@ -44,6 +64,7 @@ var processInstanceId = $('#processInstanceId').val();
 var taskId = $('#taskId').val();
 readComments();
 
+//------------------------更改日期优先级---------------------------
 //单击到期日属性可以编辑
 $('.due-date').click(function () {
     $(this).hide();
@@ -54,48 +75,35 @@ $('.datepicker').datepicker({
     locale: 'zh-cn'
 });
 //更改到期日
-$('.due-date-input').blur(function () {
-    var ele = this;
-    var value = $(this).val();
-    if (value) {
-        $(ele).hide();
-        //发送post请求修改日期
-        $.ajax({
-            url: '/task/property/' + taskId,
-            data: {
-                propertyName: 'dueDate',
-                value: value
-            },
-            method: 'POST'
-        }).done(function () {
-            toggle_alert(true, "截至日期修改成功");
-            $('.due-date').show().text(value);
-        });
-    }
+var $dueDate = $('.due-date-input');
+$dueDate.blur(function () {
+    changeTaskProperty($dueDate, "dueDate", function () {
+        toggle_alert(true, "到期日修改成功");
+        $('.due-date').show().text($dueDate.val());
+    })
 });
-
-//更改任务优先级
+//------------------------更改任务优先级---------------------------
 $('.priority').click(function () {
     $(this).hide();
     $('#priority').show();
 });
-//更改任务优先级
-$('#priority').change(function () {
-    var ele = this;
-    var value = $(this).val();
-    if (value) {
-        $(ele).hide();
-        //发送post请求
-        $.ajax({
-            url: '/task/property/' + taskId,
-            data: {
-                propertyName: 'priority',
-                value: value
-            },
-            method: 'POST'
-        }).done(function () {
-            toggle_alert(true, "优先级修改成功");
-            $('.priority').show().text($('option:selected', ele).text());
-        });
-    }
+var $priority = $('#priority');
+$priority.change(function () {
+    changeTaskProperty($priority, "priority", function () {
+        toggle_alert(true, "优先级修改成功");
+        $('.priority').show().text($('option:selected', $priority).text());
+    })
+});
+//------------------------------拥有人---------------------------
+$('#owner').click(function () {
+    $(this).hide();
+    $('#ownerSelect').show();
+});
+//更改拥有人
+var $ownerSelect = $('#ownerSelect');
+$ownerSelect.change(function () {
+    changeTaskProperty($ownerSelect, "owner", function () {
+        toggle_alert(true, "拥有人修改成功");
+        $('#owner').show().text($('option:selected', $ownerSelect).val());
+    })
 });
