@@ -23,12 +23,6 @@
         .alert{
             text-align: center;
         }
-        #div1{
-            float:left;
-        }
-        #div2{
-            float:right
-        }
     </style>
 </@block>
 </head>
@@ -55,6 +49,7 @@
                     </a>
                 </li>
                 <@macro.render_nav_item endpoint="/user-manage" title="用户管理"></@macro.render_nav_item>
+                <@macro.render_nav_item endpoint="/group-manage" title="用户组管理"></@macro.render_nav_item>
             </ul>
             <!--操作-->
             <ul class="navbar-nav ml-auto">

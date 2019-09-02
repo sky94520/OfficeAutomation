@@ -26,7 +26,7 @@
                     <table id="myTable" class="table table-striped">
                         <thead>
                         <tr>
-                            <th>用户名</th>
+                            <th>用户ID</th>
                             <th>FIRSTNAME</th>
                             <th>LASTNAME</th>
                             <th>邮箱</th>
@@ -42,7 +42,7 @@
                                 <td>${ul.lastName}</td>
                                 <td>${ul.email}</td>
                                 <td>${ul.password!}</td>
-                                <td></td>
+                                <td data-toggle="modal" data-target="#exampleModal" style="color: #005cbf;cursor: pointer" onclick="getGroups($(this))">查看所属群组</td><td></td>
                                 <td><button type="button" class="btn btn-info" onclick="edit($(this))">编辑</button></td>
                             </tr>
                         </#list>
@@ -58,7 +58,7 @@
 
                 <form class="tm-signup-form" id="myform">
                     <div class="form-group">
-                        <label for="name">用户名</label>
+                        <label for="name">用户ID</label>
                         <input  id="name" name="name" type="text" class="form-control validate" required>
                     </div>
                     <div class="form-group">
@@ -78,29 +78,100 @@
                         <input id="password" name="school" type="text" class="form-control validate" required>
                     </div>
                     <div class="form-group">
-                        <label for="type">所属群组</label>
-                        <select id="type" class="form-control">
-                            <option>普通员工</option>
-                            <option>首席运营官</option>
-                            <option>首席技术官</option>
-                        </select>
+                        <#--                        <label data-toggle="modal" data-target="#modifyModal" style="cursor: pointer;color: #005cbf;float: left" onclick="modifyGetMembers()">群组人员修改</label>-->
+                        <label data-toggle="modal" data-target="#modifyModal" style="cursor: pointer;color: #005cbf;" onclick="modifyGetGroups()">所属群组修改</label>
                     </div>
                     <input id="id" name="id" style="display: none" type="text">
                     <div class="row">
-                        <div class="col-12 col-sm-4">
-                            <button type="button" class="btn btn-primary" onclick="update_user()">更新此用户
-                            </button>
-                        </div>
+<#--                        <div class="col-12 col-sm-4">-->
+<#--                            <button type="button" class="btn btn-primary" onclick="update_user()">更新此用户-->
+<#--                            </button>-->
+<#--                        </div>-->
                         <div class="col-12 col-sm-4 tm-btn-right">
                             <button  type="button" class="btn btn-danger"  onclick="add_user()">新增用户
                             </button>
                         </div>
-                        <div class="col-12 col-sm-4 tm-btn-right">
-                            <button  type="button" class="btn btn-danger"  onclick="del_user()">删除此用户
-                            </button>
-                        </div>
+<#--                        <div class="col-12 col-sm-4 tm-btn-right">-->
+<#--                            <button  type="button" class="btn btn-danger"  onclick="del_user()">删除此用户-->
+<#--                            </button>-->
+<#--                        </div>-->
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <!-- 展示所属群组的模态框-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table" id="model-table">
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">群组ID</th>
+                            <th scope="col">群组名称</th>
+                            <th scope="col">类型</th>
+                        </tr>
+                        <tbody id="modelTbody">
+
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改所属群组的模态框（Modal） -->
+    <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog bd-example-modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modifyModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table" id="modify-model-table">
+                        <tr>
+                            <th scope="col" style="text-align: center;">该用户所在群组</th>
+                            <th> </th>
+                            <th scope="col" style="text-align: center;">该用户未在的群组</th>
+                        </tr>
+                        <tr>
+                            <td width="40%">
+                                <select   name="left" id="left" size="8">
+                                    <!--<option value="20">测试数据一</option>-->
+                                </select>
+                            </td>
+                            <td width="20%" align="center">
+                                <input type="button" value=" >> "
+                                       onclick="moveOption(document.getElementById('left'),document.getElementById('right'))"><br><br>
+                                <input type="button" value=" << "
+                                       onclick="moveOption(document.getElementById('right'), document.getElementById('left'))">
+                            </td>
+                            <td width="40%">
+                                <select  multiple name="right" id="right" size="8">
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary " onclick="modifyMGroupsInfo()">保存</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
             </div>
         </div>
     </div>

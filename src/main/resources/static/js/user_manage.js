@@ -27,37 +27,35 @@ function add_user() {
     let last_name = $("#last-name").val();
     let email = $("#email").val();
     let password = $("#password").val();
-    var  myselect=document.getElementById("type");
-    var index= myselect.selectedIndex ;
-    var type = myselect.options[index].text;
+
     //对某些信息做出限制
     if(name==""){
-        toggle_alert(false, "", "用户名不能为空！");
+        toggle_alert(false,  "用户名不能为空！");
         return false;
     }
     if(first_name==""){
-        toggle_alert(false, "", "用户名不能为空！");
+        toggle_alert(false,  "用户名不能为空！");
         return false;
     }
     if(last_name==""){
-        toggle_alert(false, "", "用户名不能为空！");
+        toggle_alert(false,  "用户名不能为空！");
         return false;
     }
 
     var re =  /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
     if(!re.test(email)){
-        toggle_alert(false, "", "请输入正确的邮箱！");
+        toggle_alert(false,  "请输入正确的邮箱！");
         return false;
     }
 
-    let data = {"id": name, "first_name":first_name, "last_name":last_name, "email": email, "password": password, "type": type};
+    let data = {"id": name, "first_name":first_name, "last_name":last_name, "email": email, "password": password,};
     $.ajax({
     type: "post",
-    url: "add-user",
+    url: "/add-user",
     data: data,
     dataType: "json",
     success: function (response) {
-         toggle_alert(response.success, "", response.message);
+         toggle_alert(response.success, response.message);
          $("#name").val("");
          $("#first-name").val("");
          $("#last-name").val("");
@@ -65,11 +63,34 @@ function add_user() {
          $("#password").val("");
     },
     error: function(response){
-         toggle_alert(response.success, "", response.message);
+         toggle_alert(response.success,  response.message);
     }
 });
 }
 
+function getGroups(e) {
+    let tds = e.siblings();
+    let id = tds[0].innerText;
+    let data = {"id":id};
+    $.ajax({
+        type:"post",
+        url:"/get-group",
+        data:data,
+        dataType:"json",
+        success:function (response) {
+            $(".modal-title").text("所属群组");
+            //清除模态框中原有内容
+            $("#modelTbody").empty();
+            for(let id in response){
+                $("#modelTbody").append("<tr><td></td><td>"+id+"</td><td>"+response[id]["name"]+"</td><td>"+response[id]["type"]+"</td></tr>");
+            }
+        },
+        error:function (response) {
+            toggle_alert(false,"获取群组信息失败")
+        }
+    })
+
+}
 function update_user() {
     //更新用户信息
     //获取表单中的消息和用户id
@@ -138,7 +159,6 @@ function edit(e) {
     $("#last-name").val(last_name);
     $("#email").val(email);
     $("#password").val(password);
-    const myselect = document.getElementById("type");
     myselect.value=group
 }
 
@@ -154,15 +174,89 @@ function del_user(){
             dataType: "json",
             success: function (response) {
                 console.log(response);
-                toggle_alert(response.success, "", response.message);
+                toggle_alert(response.success,  response.message);
             },
             error: function (response) {
                 console.log(response);
-                toggle_alert(response.success, "", response.message);
+                toggle_alert(response.success, response.message);
             }
         });
     }
     else{
         return false;
     }
+}
+
+function modifyGetGroups() {
+    let id = $("#name").val();
+
+    let data = {"id": id};
+    $.ajax({
+            url: "/modify-get-groups",
+            type: "POST",
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                $("#left").empty();
+                $("#right").empty();
+                $(".modal-title").text("所属群组修改");
+                for(let id in response["exit"]){
+                    $("#left").append("<option value=\"20\">"+response["exit"][id]+"</option>");
+                }
+                for(let id in response["noExit"]){
+                    $("#right").append("<option value=\"20\">"+response["noExit"][id]+"</option>");
+                }
+
+            },
+
+        }
+    );
+}
+
+function moveOption(obj1, obj2)
+{
+    for(let i = obj1.options.length - 1 ; i >= 0 ; i--)
+    {
+        if(obj1.options[i].selected)
+        {
+            let opt = new Option(obj1.options[i].text,obj1.options[i].value);
+            opt.selected = true;
+            obj2.options.add(opt);
+            obj1.remove(i);
+        }
+    }
+}
+
+/**
+ * 更新所属用户组
+ */
+function modifyMGroupsInfo() {
+    let options = $("#left").children();
+    let nameStr = "";
+    for(let i=0;i<options.length;i++){
+        if(i==0){
+            nameStr += options[i].text;
+        }else{
+            nameStr += (" "+options[i].text);
+        }
+
+    }
+    let userId = $("#name").val();
+    console.log(nameStr)
+    let data = {nameList:nameStr,"userId":userId};
+    console.log(data);
+    $.ajax({
+        type:"POST",
+        url:"/modify-groups",
+        data:data,
+        dataType:"json",
+        traditional: true,
+        success: function (response) {
+            toggle_alert(response.success, response.message);
+        },
+
+
+    })
+
+
 }
